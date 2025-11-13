@@ -1,0 +1,48 @@
+<div class="page">
+    <h2>Quản Lý Users</h2>
+
+    <div class="form-card" *ngIf="!selectedUser">
+      <h3>Thêm User Mới</h3>
+      <form (ngSubmit)="createUser()">
+        <input [(ngModel)]="newUser.username" name="username" placeholder="Username" required>
+        <input [(ngModel)]="newUser.email" name="email" type="email" placeholder="Email" required>
+        <input [(ngModel)]="newUser.password" name="password" type="password" placeholder="Password" required>
+        <button type="submit">Thêm User</button>
+      </form>
+    </div>
+
+    <div class="form-card" *ngIf="selectedUser">
+      <h3>Cập nhật User (ID: {{selectedUser.id}})</h3>
+      <form (ngSubmit)="updateUser()">
+        <input [(ngModel)]="selectedUser.username" name="username_edit" placeholder="Username" required>
+        <input [(ngModel)]="selectedUser.email" name="email_edit" type="email" placeholder="Email" required>
+        <button type="submit" class="btn-update">Cập nhật</button>
+        <button type="button" class="btn-cancel" (click)="cancelEdit()">Hủy</button>
+      </form>
+    </div>
+
+    <div class="table-card">
+      <h3>Danh Sách Users</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{user.id}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.email}}</td>
+            <td>
+              <button class="btn-edit" (click)="selectUserForEdit(user)" [disabled]="selectedUser">Sửa</button>
+              <button class="btn-delete" (click)="deleteUser(user.id!)">Xóa</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</div>

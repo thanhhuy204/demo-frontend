@@ -1,0 +1,67 @@
+<div class="page">
+    <h2>Quản Lý Đơn Hàng</h2>
+    
+    <div class="form-card" *ngIf="!selectedOrder">
+      <h3>Tạo Đơn Hàng Mới</h3>
+      <form (ngSubmit)="createOrder()">
+        <select [(ngModel)]="newOrder.userId" name="userId" required>
+          <option value="">-- Chọn User --</option>
+          <option *ngFor="let user of users" [value]="user.id">{{user.username}}</option>
+        </select>
+        
+        <select [(ngModel)]="selectedProductId" name="product" (change)="onProductChange()" required>
+          <option value="">-- Chọn Sản Phẩm --</option>
+          <option *ngFor="let product of products" [value]="product.id">
+            {{product.name}} - {{product.price | number:'1.0-0'}} VNĐ
+          </option>
+        </select>
+        
+        <input [(ngModel)]="newOrder.price" name="price" type="number" placeholder="Giá" readonly>
+        
+        <button type="submit" [disabled]="!newOrder.userId || !newOrder.product">Tạo Đơn</button>
+      </form>
+    </div>
+
+    <div class="form-card" *ngIf="selectedOrder">
+        <h3>Cập nhật Đơn Hàng (ID: {{selectedOrder.id}})</h3>
+        <form (ngSubmit)="updateOrder()">
+          <select [(ngModel)]="selectedOrder.userId" name="userId_edit" required>
+            <option *ngFor="let user of users" [value]="user.id">{{user.username}}</option>
+          </select>
+          
+          <input [(ngModel)]="selectedOrder.product" name="product_edit" readonly>
+          
+          <input [(ngModel)]="selectedOrder.price" name="price_edit" type="number" placeholder="Giá" required>
+          
+          <button type="submit" class="btn-update">Cập nhật</button>
+          <button type="button" class="btn-cancel" (click)="cancelEdit()">Hủy</button>
+        </form>
+      </div>
+
+    <div class="table-card">
+      <h3>Danh Sách Đơn Hàng</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>User ID</th>
+            <th>Sản Phẩm</th>
+            <th>Giá</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders">
+            <td>{{order.id}}</td>
+            <td>{{order.userId}}</td>
+            <td>{{order.product}}</td>
+            <td>{{order.price | number:'1.0-0'}} VNĐ</td>
+            <td>
+              <button class="btn-edit" (click)="selectOrderForEdit(order)" [disabled]="selectedOrder">Sửa</button>
+              <button class="btn-delete" (click)="deleteOrder(order.id!)">Xóa</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</div>
